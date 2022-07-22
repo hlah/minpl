@@ -1,0 +1,8 @@
+term = _{ functor | variable | atom }
+variable = @{ ASCII_ALPHA_UPPER ~ ASCII_ALPHA* }
+atom = { pred_name }
+functor = { pred_name ~ "(" ~ term ~ ("," ~ term)* ~ ")" }
+
+pred_name =  @{ ASCII_ALPHA_LOWER ~ ASCII_ALPHA* }
+
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
