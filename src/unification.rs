@@ -1,41 +1,5 @@
-use super::term::Term;
-
-use std::collections::HashMap;
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Assignments {
-    assignments: HashMap<String, Term>,
-}
-
-impl Assignments {
-    pub fn empty() -> Self {
-        Self {
-            assignments: HashMap::new(),
-        }
-    }
-
-    pub fn add<S: ToString>(&mut self, variable: S, value: Term) {
-        self.assignments.insert(variable.to_string(), value);
-    }
-
-    pub fn with<S: ToString>(mut self, variable: S, value: Term) -> Self {
-        self.assignments.insert(variable.to_string(), value);
-        self
-    }
-
-    pub fn merge(mut self, other: Self) -> Option<Self> {
-        for (key, value) in other.assignments.into_iter() {
-            if let Some(old_value) = self.assignments.get(&key) {
-                if *old_value != value {
-                    return None;
-                }
-            } else {
-                self.assignments.insert(key, value);
-            }
-        }
-        Some(self)
-    }
-}
+use crate::assignments::Assignments;
+use crate::term::Term;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum UnifyResult {
