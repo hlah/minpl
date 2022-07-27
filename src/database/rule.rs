@@ -1,7 +1,7 @@
 use crate::term::Term;
 use std::fmt::Display;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Rule {
     pub head: Term,
     pub body: Vec<Term>,

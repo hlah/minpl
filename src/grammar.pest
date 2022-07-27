@@ -1,3 +1,12 @@
+query = { SOI ~ term ~ "." ~ EOI }
+
+database = { SOI ~ database_rule_list ~ EOI }
+database_rule_list = { rule_list }
+rule_list = _{ rule ~ rule_list | rule }
+
+rule = { term ~ "." | term ~ ":-" ~ goal_list ~ "." }
+goal_list = _{ term ~ "," ~ goal_list | term }
+
 term = _{ functor | variable | atom }
 variable = @{ ASCII_ALPHA_UPPER ~ ASCII_ALPHA* }
 atom = { pred_name }

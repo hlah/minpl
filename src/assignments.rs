@@ -38,6 +38,10 @@ impl Assignments {
         }
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.assignments.is_empty()
+    }
+
     pub fn add<S: ToString>(&mut self, variable: S, value: Term) {
         self.assignments.insert(variable.to_string(), value);
     }

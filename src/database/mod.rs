@@ -3,7 +3,7 @@ mod rule;
 use crate::term::Term;
 pub use rule::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Database {
     rules: Vec<Rule>,
 }
@@ -27,6 +27,10 @@ impl Database {
             body: body.into_iter().collect(),
         });
         self
+    }
+
+    pub fn add(&mut self, rule: Rule) {
+        self.rules.push(rule);
     }
 
     pub fn rules(&self) -> &[Rule] {
