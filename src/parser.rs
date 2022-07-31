@@ -1,5 +1,5 @@
 use crate::{database::Database, term::Term};
-use pest::{iterators::Pair, Parser};
+use pest::{error::Error, iterators::Pair, Parser};
 use pest_derive::Parser;
 
 #[derive(Parser)]
@@ -7,12 +7,16 @@ use pest_derive::Parser;
 pub struct MinplParser;
 
 impl MinplParser {
-    pub fn parse_query(code: &str) -> Term {
-        Self::build_query(Self::parse(Rule::query, code).unwrap().next().unwrap())
+    pub fn parse_query(code: &str) -> Result<Term, Error<Rule>> {
+        Ok(Self::build_query(
+            Self::parse(Rule::query, code)?.next().unwrap(),
+        ))
     }
 
-    pub fn parse_database(code: &str) -> Database {
-        Self::build_database(Self::parse(Rule::database, code).unwrap().next().unwrap())
+    pub fn parse_database(code: &str) -> Result<Database, Error<Rule>> {
+        Ok(Self::build_database(
+            Self::parse(Rule::database, code)?.next().unwrap(),
+        ))
     }
 
     fn parse_term(code: &str) -> Term {
@@ -135,7 +139,7 @@ mod test {
     fn parse_database() {
         let code = "father(peter, john). father(peter, adam). brother(X, Y) :- father(Z, X), father(Z, Y).";
 
-        let database = MinplParser::parse_database(code);
+        let database = MinplParser::parse_database(code).unwrap();
 
         let expected_database = Database::empty()
             .with_fact(Term::functor(
@@ -161,7 +165,7 @@ mod test {
     fn parse_query() {
         let code = "brother(john, X).";
 
-        let query = MinplParser::parse_query(code);
+        let query = MinplParser::parse_query(code).unwrap();
 
         let expected_query = Term::functor("brother", [Term::atom("john"), Term::variable("X")]);
         assert_eq!(expected_query, query);

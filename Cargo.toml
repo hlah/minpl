@@ -9,6 +9,8 @@ edition = "2021"
 pest = "2.1"
 pest_derive = "2.1"
 rustyline = "10"
+anyhow = "1"
+colored = "2"
 
 [dev-dependencies]
 test-case = "2.1"
